@@ -1,0 +1,478 @@
+<<<<<<< HEAD
+/* Estilos exclusivos da tela Calculadora de Torque.
+   Carregue DEPOIS do style.css do site. */
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.calc-page {
+  flex: 1;
+  display: flex;
+  width: 100%;
+  padding: 20px;
+}
+
+.calc-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px 40px 40px;
+  text-align: left;
+}
+
+.calc-card h1 {
+  margin-bottom: 30px;
+}
+
+.calc-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(320px, 480px) 1fr;
+  gap: 0;
+}
+
+/* ===== Formulário ===== */
+.calc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-right: 48px;
+}
+
+.calc-bloco {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.calc-card label {
+  font-size: 16px;
+  color: #1d1d1d;
+}
+
+.calc-card select,
+.calc-card input[type="text"] {
+  height: 42px;
+  padding: 0 10px;
+  font: inherit;
+  background: #fff;
+  color: #1d1d1d;
+  border: 1px solid #095588;
+  border-radius: 5px;
+}
+
+.calc-card select {
+  width: 100%;
+}
+
+.calc-card select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.calc-card select:focus-visible,
+.calc-card input:focus-visible,
+.calc-card button:focus-visible {
+  outline: 3px solid #40a9ff;
+  outline-offset: 2px;
+}
+
+.calc-espessura {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.calc-espessura input {
+  width: 90px;
+  text-align: center;
+}
+
+.calc-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  cursor: pointer;
+}
+
+.calc-check input {
+  width: 20px;
+  height: 20px;
+  accent-color: #095588;
+}
+
+.calc-card .bt {
+  align-self: center;
+  margin-top: 8px;
+  padding: 14px 44px;
+  background: #f7a941;
+  color: #00213b;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.calc-card .bt:hover {
+  background: #e0912a;
+}
+
+/* ===== Resultado ===== */
+.calc-resultado {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  padding-left: 48px;
+  border-left: 3px solid #095588;
+}
+
+.calc-resultado p {
+  text-align: left;
+  font-size: 18px;
+}
+
+.calc-valor {
+  text-align: center !important;
+  font-size: 96px !important;
+  font-weight: bold;
+  line-height: 1;
+  color: #00213b;
+}
+
+.calc-valor small {
+  font-size: 32px;
+  margin-left: 6px;
+}
+
+.calc-faixa {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 16px 0;
+}
+
+.calc-caixa {
+  flex: 1;
+  max-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+  color: #00213b;
+}
+
+.calc-caixa span {
+  display: block;
+  font-weight: bold;
+}
+
+.calc-rotulo {
+  font-size: 34px;
+  padding: 4px 8px;
+}
+
+.calc-numero {
+  font-size: 80px;
+  line-height: 1.15;
+  padding: 8px 0;
+}
+
+.calc-minimo span {
+  background: #f7a941;
+}
+.calc-maximo span {
+  background: #95b53d;
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 900px) {
+  .calc-page {
+    padding: 10px;
+  }
+  .calc-card {
+    padding: 20px 16px;
+  }
+
+  .calc-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .calc-form {
+    padding-right: 0;
+  }
+
+  .calc-resultado {
+    padding: 28px 0 0;
+    border-left: none;
+    border-top: 3px solid #095588;
+  }
+
+  .calc-valor {
+    font-size: 64px !important;
+  }
+  .calc-rotulo {
+    font-size: 22px;
+  }
+  .calc-numero {
+    font-size: 52px;
+  }
+  .calc-faixa {
+    gap: 16px;
+  }
+}
+
+/* ===== Nota do cálculo / erros ===== */
+.calc-resultado .calc-nota {
+  font-size: 14px;
+  color: #555;
+}
+
+.calc-resultado .calc-nota.erro {
+  color: #b3261e;
+  font-weight: bold;
+}
+=======
+/* Estilos exclusivos da tela Calculadora de Torque.
+   Carregue DEPOIS do style.css do site. */
+
+.calc-page {
+  flex: 1;
+  display: flex;
+  width: 100%;
+  padding: 20px;
+}
+
+.calc-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px 40px 40px;
+  text-align: left;
+}
+
+.calc-card h1 {
+  margin-bottom: 30px;
+}
+
+.calc-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(320px, 480px) 1fr;
+  gap: 0;
+}
+
+/* ===== Formulário ===== */
+.calc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-right: 48px;
+}
+
+.calc-bloco {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.calc-card label {
+  font-size: 16px;
+  color: #1d1d1d;
+}
+
+.calc-card select,
+.calc-card input[type="text"] {
+  height: 42px;
+  padding: 0 10px;
+  font: inherit;
+  background: #fff;
+  color: #1d1d1d;
+  border: 1px solid #095588;
+  border-radius: 5px;
+}
+
+.calc-card select {
+  width: 100%;
+}
+
+.calc-card select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.calc-card select:focus-visible,
+.calc-card input:focus-visible,
+.calc-card button:focus-visible {
+  outline: 3px solid #40a9ff;
+  outline-offset: 2px;
+}
+
+.calc-espessura {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.calc-espessura input {
+  width: 90px;
+  text-align: center;
+}
+
+.calc-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  cursor: pointer;
+}
+
+.calc-check input {
+  width: 20px;
+  height: 20px;
+  accent-color: #095588;
+}
+
+.calc-card .bt {
+  align-self: center;
+  margin-top: 8px;
+  padding: 14px 44px;
+  background: #f7a941;
+  color: #00213b;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.calc-card .bt:hover {
+  background: #e0912a;
+}
+
+/* ===== Resultado ===== */
+.calc-resultado {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  padding-left: 48px;
+  border-left: 3px solid #095588;
+}
+
+.calc-resultado p {
+  text-align: left;
+  font-size: 18px;
+}
+
+.calc-valor {
+  text-align: center !important;
+  font-size: 96px !important;
+  font-weight: bold;
+  line-height: 1;
+  color: #00213b;
+}
+
+.calc-valor small {
+  font-size: 32px;
+  margin-left: 6px;
+}
+
+.calc-faixa {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 16px 0;
+}
+
+.calc-caixa {
+  flex: 1;
+  max-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+  color: #00213b;
+}
+
+.calc-caixa span {
+  display: block;
+  font-weight: bold;
+}
+
+.calc-rotulo {
+  font-size: 34px;
+  padding: 4px 8px;
+}
+
+.calc-numero {
+  font-size: 80px;
+  line-height: 1.15;
+  padding: 8px 0;
+}
+
+.calc-minimo span {
+  background: #f7a941;
+}
+.calc-maximo span {
+  background: #95b53d;
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 900px) {
+  .calc-page {
+    padding: 10px;
+  }
+  .calc-card {
+    padding: 20px 16px;
+  }
+
+  .calc-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .calc-form {
+    padding-right: 0;
+  }
+
+  .calc-resultado {
+    padding: 28px 0 0;
+    border-left: none;
+    border-top: 3px solid #095588;
+  }
+
+  .calc-valor {
+    font-size: 64px !important;
+  }
+  .calc-rotulo {
+    font-size: 22px;
+  }
+  .calc-numero {
+    font-size: 52px;
+  }
+  .calc-faixa {
+    gap: 16px;
+  }
+}
+
+/* ===== Nota do cálculo / erros ===== */
+.calc-resultado .calc-nota {
+  font-size: 14px;
+  color: #555;
+}
+
+.calc-resultado .calc-nota.erro {
+  color: #b3261e;
+  font-weight: bold;
+}
+>>>>>>> 9905d301567f5ad8402bdc47a675e50c3d137a15
