@@ -7,10 +7,6 @@
   padding: 20px;
 }
 
-body {
-  font-family: "SoleilRegular", sans-serif;
-}
-
 .calc-card {
   flex: 1;
   min-width: 0;
@@ -238,7 +234,6 @@ body {
   font-weight: bold;
 }
 
-/* Evita barra horizontal causada por qualquer estouro de largura */
 .calc-body {
   overflow-x: hidden;
 }
