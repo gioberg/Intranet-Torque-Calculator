@@ -1,3 +1,12 @@
+/**
+ * Calculadora de torque
+ * O torque SOBE com a espessura e a resistência das chapas, até bater no limite do parafuso:
+ *   T_chapa    = K_CHAPA × diâmetro × Σ(resistência do material × espessura)
+ *   T_parafuso = K × d × 0,75 × σy × At          (mesma fórmula da calculadora de pré-carga)
+ *   Torque     = o MENOR entre os dois
+ */
+
+// ---------- DADOS (edite aqui) ----------
 // resistencia: 1.0 = mais forte (aço) ... menor = mais fraca
 const MATERIAIS = {
   aco: { nome: "Aço", resistencia: 1.0 },
@@ -7,9 +16,17 @@ const MATERIAIS = {
   plastico: { nome: "Plástico", resistencia: 0.25 },
 };
 
-// Torque (N.m) que um parafuso suporta em chapa de resistência 1.0. 4.0 e 4.5 interpolados.
-const TORQUE_BASE = { "4.0": 0.9, 4.2: 1.0, 4.5: 1.2, 4.8: 1.5, "5.0": 1.5 };
 const PARAFUSO_PADRAO = "4.2";
+const ESPESSURA_PADRAO = 1; // mm, usada quando o campo fica vazio
+
+// Chapa: calibrado para aço 1 mm + aço 1 mm com parafuso 4,2 mm = 1,0 N.m (planilha)
+const K_CHAPA = 0.119;
+
+// Parafuso: classe 8.8, 75% do escoamento, atrito zincado (como na calculadora de pré-carga)
+const SIGMA_Y = 640; // MPa
+const K_ATRITO = 0.2;
+const AT_TABELA = { 5: 14.2, 6: 20.1, 8: 36.6, 10: 58.0 }; // mm² (métricos)
+const areaResistente = (d) => AT_TABELA[d] ?? 0.57 * d * d; // aproximação p/ 4,0 a 4,8
 
 // [torque máximo da faixa, seletor mín, seletor máx] — aproximado a partir da planilha
 const SELETOR_POR_TORQUE = [
@@ -17,26 +34,41 @@ const SELETOR_POR_TORQUE = [
   [1.5, 5, 6],
   [Infinity, 6, 8],
 ];
+const TORQUE_MAX_PLANILHA = 1.6; // maior torque que a planilha da linha cobre
 
 //CÁLCULO
-// Chapa mais fina que o parafuso perde resistência na proporção (espessura / diâmetro)
-function resistenciaChapa(chave, espessura, diametro) {
-  const fatorEspessura = espessura ? Math.min(1, espessura / diametro) : 1;
-  return MATERIAIS[chave].resistencia * fatorEspessura;
+function torqueParafuso(d) {
+  const forca = 0.75 * SIGMA_Y * areaResistente(d); // N
+  return K_ATRITO * (d / 1000) * forca; // N.m
+}
+
+// Capacidade da chapa: material × espessura (cresce de forma contínua)
+function capacidadeChapa(chave, espessura) {
+  return MATERIAIS[chave].resistencia * (espessura ?? ESPESSURA_PADRAO);
 }
 
 function calcularTorque(mat1, esp1, mat2, esp2, diametro) {
-  const base = TORQUE_BASE[diametro];
-  if (!MATERIAIS[mat1] || !MATERIAIS[mat2] || base === undefined) {
+  const d = parseFloat(diametro);
+  if (!MATERIAIS[mat1] || !MATERIAIS[mat2] || isNaN(d)) {
     throw new Error("Material ou parafuso não encontrado.");
   }
-  const d = parseFloat(diametro);
-  const r1 = resistenciaChapa(mat1, esp1, d);
-  const r2 = resistenciaChapa(mat2, esp2, d);
 
-  const torque = Math.max(0.1, Math.round(base * Math.min(r1, r2) * 10) / 10);
+  const tChapa =
+    K_CHAPA * d * (capacidadeChapa(mat1, esp1) + capacidadeChapa(mat2, esp2));
+  const tParafuso = torqueParafuso(d);
+
+  const torque = Math.max(
+    0.1,
+    Math.round(Math.min(tChapa, tParafuso) * 10) / 10,
+  );
   const [, min, max] = SELETOR_POR_TORQUE.find(([limite]) => torque <= limite);
-  return { torque, min, max, limitante: r1 <= r2 ? 1 : 2 };
+  return {
+    torque,
+    min,
+    max,
+    limitadoPeloParafuso: tParafuso < tChapa,
+    espessuraAssumida: esp1 == null || esp2 == null,
+  };
 }
 
 //INTERFACE
@@ -74,11 +106,22 @@ function calcular() {
     ? `parafuso de ${nomeSelecionado("op3")}`
     : `parafuso de ${formatar(parseFloat(PARAFUSO_PADRAO))} mm (padrão)`;
 
-  const limitante =
-    r.limitante === 1 ? nomeSelecionado("op1") : nomeSelecionado("op2");
+  const avisos = [
+    r.limitadoPeloParafuso
+      ? "Limite: resistência do parafuso."
+      : "Limite: resistência das chapas.",
+  ];
+  if (r.espessuraAssumida) {
+    avisos.push(`Espessura não informada: assumido ${ESPESSURA_PADRAO} mm.`);
+  }
+  if (r.torque > TORQUE_MAX_PLANILHA) {
+    avisos.push(
+      "Acima da faixa da planilha da linha: confirme com a engenharia.",
+    );
+  }
   const nota = $("nota");
   nota.classList.remove("erro");
-  nota.textContent = `Chapa limitante: ${r.limitante} (${limitante}).`;
+  nota.textContent = avisos.join(" ");
 }
 
 $("usarParafuso").addEventListener(
